@@ -11,7 +11,7 @@ export default function PayPage() {
 
   const [parkingDays, setParkingDays] = useState(0);
 
-  const [petFee, setPetFee] = useState(false);
+ const [petOption, setPetOption] = useState("none");
 
   const [tips, setTips] = useState(0);
 
@@ -19,7 +19,7 @@ export default function PayPage() {
 
   const parking = parkingDays * 0;
 
-  const pet = petFee ? 10 : 0;
+  const pet = petOption === "1" ? 20 : petOption === "2" ? 30 : 0;
 
   const total =
     touristTax +
@@ -174,15 +174,34 @@ async function checkout() {
       </div>
 
       <div className="flex items-center gap-2 mb-4">
-        <input
-          type="checkbox"
-          checked={petFee}
-          onChange={() =>
-            setPetFee(!petFee)
-          }
-        />
+        <div className="space-y-2">
+  <label className="font-medium">
+    Pets
+  </label>
 
-        <label>Pet fee (€10)</label>
+  <select
+    value={petOption}
+    onChange={(e) => setPetOption(e.target.value)}
+    className="w-full border rounded-xl p-3"
+  >
+    <option value="none">No pets</option>
+    <option value="1">1 pet — €20</option>
+    <option value="2">2 pets — €30</option>
+    <option value="3plus">
+      3+ pets — price upon request before arrival
+    </option>
+  </select>
+
+  {petOption === "3plus" && (
+    <p className="text-sm text-red-500">
+      Please contact us before arrival for approval and pricing.
+    </p>
+  )}
+</div>
+
+      <label className="font-medium">
+        Pets & Pet Fees
+      </label>
       </div>
 
       <div className="mb-6">
