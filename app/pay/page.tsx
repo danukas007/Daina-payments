@@ -176,13 +176,13 @@ async function checkout() {
           className="border p-3 w-full"
         />
       </div>
-
+ 
       <div className="flex items-center gap-2 mb-4">
         <div className="space-y-2">
-  <label className="font-medium">
-    Pets
-  </label>
-
+ <label className="font-medium">
+        Pets & Pet Fees
+      </label>
+      
   <select
     value={petOption}
     onChange={(e) => setPetOption(e.target.value)}
@@ -203,9 +203,7 @@ async function checkout() {
   )}
 </div>
 
-      <label className="font-medium">
-        Pets & Pet Fees
-      </label>
+     
       </div>
 
       <div className="mb-6">
