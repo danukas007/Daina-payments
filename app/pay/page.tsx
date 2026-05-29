@@ -6,20 +6,24 @@ export default function PayPage() {
   const [guestName, setGuestName] = useState("");
   const [apartment, setApartment] = useState("");
 
-  const [nights, setNights] = useState(1);
-  const [guests, setGuests] = useState(1);
-
-  const [parkingDays, setParkingDays] = useState(0);
+  const [nights, setNights] = useState("");
+const [guests, setGuests] = useState("");
+const [parkingDays, setParkingDays] = useState("");
 
  const [petOption, setPetOption] = useState("none");
 
   const [tips, setTips] = useState(0);
 
-  const touristTax = nights * guests * 2;
-
-  const parking = parkingDays * 0;
-
-  const pet = petOption === "1" ? 20 : petOption === "2" ? 30 : 0;
+ const touristTax =
+  Number(nights) * Number(guests) * 2;
+  const parking =
+  Number(parkingDays) * 0;
+const pet =
+  petOption === "1"
+    ? 20
+    : petOption === "2"
+    ? 30
+    : 0;
 
   const total =
     touristTax +
@@ -140,9 +144,9 @@ async function checkout() {
         <input
           type="number"
           value={nights}
-          onChange={(e) =>
-            setNights(Number(e.target.value))
-          }
+          onChange={(e) => 
+            setNights(e.target.value)}
+          
           className="border p-3 w-full"
         />
       </div>
@@ -154,7 +158,7 @@ async function checkout() {
           type="number"
           value={guests}
           onChange={(e) =>
-            setGuests(Number(e.target.value))
+            setGuests(e.target.value)
           }
           className="border p-3 w-full"
         />
@@ -167,7 +171,7 @@ async function checkout() {
           type="number"
           value={parkingDays}
           onChange={(e) =>
-            setParkingDays(Number(e.target.value))
+            setParkingDays(e.target.value)
           }
           className="border p-3 w-full"
         />
