@@ -6,6 +6,17 @@ export async function POST(req: Request) {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
+   
+    metadata: {
+  guest_name,
+  apartment,
+  nights: nights.toString(),
+  guests: guests.toString(),
+  parking_days: parkingDays.toString(),
+  pet_fee: petFee.toString(),
+  tips: tips.toString(),
+},
+
    line_items: [
 
   ...(body.touristTax > 0
