@@ -3,6 +3,16 @@ import { stripe } from "@/lib/stripe";
 export async function POST(req: Request) {
   const body = await req.json();
 
+  const {
+  guest_name,
+  apartment,
+  nights,
+  guests,
+  parkingDays,
+  petFee,
+  tips,
+} = body;
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
