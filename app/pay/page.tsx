@@ -44,16 +44,18 @@ async function checkout() {
 
       body: JSON.stringify({
 
-        guestName,
+        guest_name: guestName,
 
         apartment,
 
+        nights,
+        guests,
+        parkingDays,
+        petOption,
+
         touristTax,
-
         parking,
-
         pet,
-
         tips,
 
         total,
