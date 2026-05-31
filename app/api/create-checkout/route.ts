@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     payment_method_types: ["card"],
     mode: "payment",
    
-    metadata: {
+   metadata: {
   guest_name: guest_name || "",
   apartment: apartment || "",
   nights: String(nights || 0),
@@ -25,6 +25,18 @@ export async function POST(req: Request) {
   parking_days: String(parkingDays || 0),
   pet_option: String(petOption || "0"),
   tips: String(tips || 0),
+},
+
+payment_intent_data: {
+  metadata: {
+    guest_name: guest_name || "",
+    apartment: apartment || "",
+    nights: String(nights || 0),
+    guests: String(guests || 0),
+    parking_days: String(parkingDays || 0),
+    pet_option: String(petOption || "0"),
+    tips: String(tips || 0),
+  },
 },
 
    line_items: [
