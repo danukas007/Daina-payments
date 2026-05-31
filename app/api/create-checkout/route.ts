@@ -4,9 +4,9 @@ export async function POST(req: Request) {
   const body = await req.json();
 
   console.log("BODY:", body);
-  
+
   const {
-  guestName,
+  guest_name,
   apartment,
   nights,
   guests,
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     mode: "payment",
    
    metadata: {
-  guest_name: guestName || "",
+  guest_name: guest_name || "",
   apartment: apartment || "",
   nights: String(nights || 0),
   guests: String(guests || 0),
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
 payment_intent_data: {
   metadata: {
-    guest_name: guestName || "",
+    guest_name: guest_name || "",
     apartment: apartment || "",
     nights: String(nights || 0),
     guests: String(guests || 0),
