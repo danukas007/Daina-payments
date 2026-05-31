@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   nights,
   guests,
   parkingDays,
-  petFee,
+  petOption,
   tips,
 } = body;
 
@@ -18,13 +18,13 @@ export async function POST(req: Request) {
     mode: "payment",
    
     metadata: {
-  guest_name,
-  apartment,
-  nights: nights.toString(),
-  guests: guests.toString(),
-  parking_days: parkingDays.toString(),
-  pet_fee: petFee.toString(),
-  tips: tips.toString(),
+  guest_name: guest_name || "",
+  apartment: apartment || "",
+  nights: String(nights || 0),
+  guests: String(guests || 0),
+  parking_days: String(parkingDays || 0),
+  pet_option: String(petOption || "0"),
+  tips: String(tips || 0),
 },
 
    line_items: [
