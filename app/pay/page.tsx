@@ -32,6 +32,19 @@ const pet =
     tips;
 async function checkout() {
 
+  console.log({
+  guest_name: guestName,
+  apartment,
+  nights,
+  guests,
+  parkingDays,
+  petOption,
+  touristTax,
+  parking,
+  pet,
+  tips,
+});
+
   const res = await fetch(
     "/api/create-checkout",
     {
