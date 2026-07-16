@@ -87,24 +87,18 @@ Daina Apartments Self Check-in.
 <div className="bg-gray-50 border rounded-2xl p-4 mb-8">
 
   <h2 className="font-medium mb-2">
-    What can be paid here
+    Optional extras
   </h2>
 
   <ul className="text-sm text-gray-600 space-y-1">
 
-    <li>
-      • Parking
-    </li>
+  <li>• Pet fee</li>
 
-    <li>
-      • Pet fee
-    </li>
+  <li>• Parking (if applicable)</li>
 
-    <li>
-      • Optional appreciation for our team
-    </li>
+  <li>• Optional tip for our hosting team</li>
 
-  </ul>
+</ul>
 
 </div>
 
