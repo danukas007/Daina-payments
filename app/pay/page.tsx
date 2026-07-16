@@ -6,17 +6,15 @@ export default function PayPage() {
   const [guestName, setGuestName] = useState("");
   const [apartment, setApartment] = useState("");
 
-  const [nights, setNights] = useState("");
-const [guests, setGuests] = useState("");
 const [parkingDays, setParkingDays] = useState("");
 
- const [petOption, setPetOption] = useState("none");
+const [petOption, setPetOption] = useState("none");
 
-  const [tips, setTips] = useState(0);
-
- const touristTax =
-  Number(nights) * Number(guests) * 2;
-  const parking =
+const [tips, setTips] = useState(0);
+  
+const touristTax = 0;
+  
+const parking =
   Number(parkingDays) * 0;
 const pet =
   petOption === "small"
@@ -53,9 +51,6 @@ async function checkout() {
         guest_name: guestName,
 
         apartment,
-
-        nights,
-        guests,
         parkingDays,
         petOption,
 
@@ -83,9 +78,9 @@ async function checkout() {
       </h1>
 <p className="text-gray-600 mb-8 leading-7">
 
-  Secure payment for optional stay extras and
-  local tourist tax during your stay at
-  Daina Apartments Self Check-in.
+Secure payment for optional stay extras
+during your stay at
+Daina Apartments Self Check-in.
 
 </p>
 
@@ -96,10 +91,6 @@ async function checkout() {
   </h2>
 
   <ul className="text-sm text-gray-600 space-y-1">
-
-    <li>
-      • Local tourist tax
-    </li>
 
     <li>
       • Parking
@@ -145,32 +136,6 @@ async function checkout() {
     Apartment 5
   </option>
 </select>
-
-      <div className="mb-4">
-        <label>Nights</label>
-
-        <input
-          type="number"
-          value={nights}
-          onChange={(e) => 
-            setNights(e.target.value)}
-          
-          className="border p-3 w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label>Guests</label>
-
-        <input
-          type="number"
-          value={guests}
-          onChange={(e) =>
-            setGuests(e.target.value)
-          }
-          className="border p-3 w-full"
-        />
-      </div>
 
       <div className="mb-4">
         <label>Parking days</label>
