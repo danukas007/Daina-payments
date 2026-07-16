@@ -1,103 +1,161 @@
 import { stripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  console.log("BODY:", body);
+    const guestName = String(body.guest_name || "").trim();
+    const apartment = String(body.apartment || "").trim();
+    const petOption = String(body.petOption || "none");
 
-  const {
-  guest_name,
-  apartment,
-  parkingDays,
-  petOption,
-  tips,
-} = body;
+    const pet = Number(body.pet || 0);
+    const tips = Number(body.tips || 0);
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    mode: "payment",
-   
-   metadata: {
-  guest_name: guest_name || "",
-  apartment: apartment || "",
-  parking_days: String(parkingDays || 0),
-  pet_option: String(petOption || "0"),
-  tips: String(tips || 0),
-},
+    if (!guestName) {
+      return Response.json(
+        { error: "Guest name is required." },
+        { status: 400 }
+      );
+    }
 
-payment_intent_data: {
-  metadata: {
-    guest_name: guest_name || "",
-    apartment: apartment || "",
-    parking_days: String(parkingDays || 0),
-    pet_option: String(petOption || "0"),
-    tips: String(tips || 0),
-  },
-},
+    if (!apartment) {
+      return Response.json(
+        { error: "Apartment is required." },
+        { status: 400 }
+      );
+    }
 
-   line_items: [
-
-  ...(body.parking > 0
-    ? [{
-        price_data: {
-
-          currency: "eur",
-
-          product_data: {
-            name: "Parking",
-          },
-
-          unit_amount:
-            body.parking * 100,
+    if (petOption === "multiple") {
+      return Response.json(
+        {
+          error:
+            "Pricing for more than one pet must be agreed before arrival.",
         },
+        { status: 400 }
+      );
+    }
 
-        quantity: 1,
-      }]
-    : []),
+    const allowedPetFees: Record<string, number> = {
+      none: 0,
+      small: 10,
+      large: 20,
+    };
 
-  ...(body.pet > 0
-    ? [{
-        price_data: {
+    const correctPetFee = allowedPetFees[petOption];
 
-          currency: "eur",
+    if (correctPetFee === undefined) {
+      return Response.json(
+        { error: "Invalid pet option." },
+        { status: 400 }
+      );
+    }
 
-          product_data: {
-            name: "Pet fee",
-          },
+    if (pet !== correctPetFee) {
+      return Response.json(
+        { error: "Invalid pet fee." },
+        { status: 400 }
+      );
+    }
 
-          unit_amount:
-            body.pet * 100,
+    if (![0, 5, 10, 20].includes(tips)) {
+      return Response.json(
+        { error: "Invalid tip amount." },
+        { status: 400 }
+      );
+    }
+
+    if (pet <= 0 && tips <= 0) {
+      return Response.json(
+        { error: "No payment item was selected." },
+        { status: 400 }
+      );
+    }
+
+    const petDescription =
+      petOption === "small"
+        ? "Small pet up to 10 kg"
+        : petOption === "large"
+          ? "Large pet over 10 kg"
+          : "No pets";
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+
+      metadata: {
+        guest_name: guestName,
+        apartment,
+        pet_option: petOption,
+        pet_description: petDescription,
+        pet_fee: String(pet),
+        tips: String(tips),
+      },
+
+      payment_intent_data: {
+        metadata: {
+          guest_name: guestName,
+          apartment,
+          pet_option: petOption,
+          pet_description: petDescription,
+          pet_fee: String(pet),
+          tips: String(tips),
         },
+      },
 
-        quantity: 1,
-      }]
-    : []),
+      line_items: [
+        ...(pet > 0
+          ? [
+              {
+                price_data: {
+                  currency: "eur",
 
-  ...(body.tips > 0
-    ? [{
-        price_data: {
+                  product_data: {
+                    name:
+                      petOption === "small"
+                        ? "Pet fee – small pet up to 10 kg"
+                        : "Pet fee – large pet over 10 kg",
+                  },
 
-          currency: "eur",
+                  unit_amount: pet * 100,
+                },
 
-          product_data: {
-            name:
-              "Tips for our team",
-          },
+                quantity: 1,
+              },
+            ]
+          : []),
 
-          unit_amount:
-            body.tips * 100,
-        },
+        ...(tips > 0
+          ? [
+              {
+                price_data: {
+                  currency: "eur",
 
-        quantity: 1,
-      }]
-    : []),
+                  product_data: {
+                    name: "Optional tip for our hosting team",
+                  },
 
-],
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
-  });
+                  unit_amount: tips * 100,
+                },
 
-  return Response.json({
-    url: session.url,
-  });
+                quantity: 1,
+              },
+            ]
+          : []),
+      ],
+
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`,
+    });
+
+    return Response.json({
+      url: session.url,
+    });
+  } catch (error) {
+    console.error("Stripe checkout error:", error);
+
+    return Response.json(
+      { error: "Unable to create payment." },
+      { status: 500 }
+    );
+  }
 }
