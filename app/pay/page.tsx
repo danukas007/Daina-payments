@@ -19,10 +19,10 @@ const [parkingDays, setParkingDays] = useState("");
   const parking =
   Number(parkingDays) * 0;
 const pet =
-  petOption === "1"
+  petOption === "small"
+    ? 10
+    : petOption === "large"
     ? 20
-    : petOption === "2"
-    ? 30
     : 0;
 
   const total =
@@ -31,8 +31,14 @@ const pet =
     pet +
     tips;
 async function checkout() {
+  if (petOption === "multiple") {
+    alert(
+      "Please contact us before arrival for approval and pricing for more than one pet."
+    );
+    return;
+  }
 
-   const res = await fetch(
+  const res = await fetch(
     "/api/create-checkout",
     {
       method: "POST",
@@ -236,11 +242,18 @@ async function checkout() {
       </div>
 
       <button
-         onClick={checkout}
-         className="bg-black text-white px-6 py-4 w-full rounded-xl"
+  onClick={checkout}
+  disabled={petOption === "multiple"}
+  className={`px-6 py-4 w-full rounded-xl text-white ${
+    petOption === "multiple"
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-black"
+  }`}
 >
-        Pay now
-      </button>
+  {petOption === "multiple"
+    ? "Contact us for pet pricing"
+    : "Pay now"}
+</button>
 
     </main>
   );
