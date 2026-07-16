@@ -8,8 +8,6 @@ export async function POST(req: Request) {
   const {
   guest_name,
   apartment,
-  nights,
-  guests,
   parkingDays,
   petOption,
   tips,
@@ -22,8 +20,6 @@ export async function POST(req: Request) {
    metadata: {
   guest_name: guest_name || "",
   apartment: apartment || "",
-  nights: String(nights || 0),
-  guests: String(guests || 0),
   parking_days: String(parkingDays || 0),
   pet_option: String(petOption || "0"),
   tips: String(tips || 0),
@@ -33,8 +29,6 @@ payment_intent_data: {
   metadata: {
     guest_name: guest_name || "",
     apartment: apartment || "",
-    nights: String(nights || 0),
-    guests: String(guests || 0),
     parking_days: String(parkingDays || 0),
     pet_option: String(petOption || "0"),
     tips: String(tips || 0),
@@ -42,24 +36,6 @@ payment_intent_data: {
 },
 
    line_items: [
-
-  ...(body.touristTax > 0
-    ? [{
-        price_data: {
-
-          currency: "eur",
-
-          product_data: {
-            name: "Tourist tax",
-          },
-
-          unit_amount:
-            body.touristTax * 100,
-        },
-
-        quantity: 1,
-      }]
-    : []),
 
   ...(body.parking > 0
     ? [{
