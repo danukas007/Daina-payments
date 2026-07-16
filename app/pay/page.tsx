@@ -186,23 +186,23 @@ async function checkout() {
       </label>
       
   <select
-    value={petOption}
-    onChange={(e) => setPetOption(e.target.value)}
-    className="w-full border rounded-xl p-3"
-  >
-    <option value="none">No pets</option>
-    <option value="1">1 pet — €20</option>
-    <option value="2">2 pets — €30</option>
-    <option value="3plus">
-      3+ pets — price upon request before arrival
-    </option>
-  </select>
+  value={petOption}
+  onChange={(e) => setPetOption(e.target.value)}
+  className="w-full border rounded-xl p-3"
+>
+  <option value="none">No pets</option>
+  <option value="small">Small pet (up to 10 kg) — €10</option>
+  <option value="large">Large pet (over 10 kg) — €20</option>
+  <option value="multiple">
+    More than one pet — price upon request before arrival
+  </option>
+</select>
 
-  {petOption === "3plus" && (
-    <p className="text-sm text-red-500">
-      Please contact us before arrival for approval and pricing.
-    </p>
-  )}
+{petOption === "multiple" && (
+  <p className="text-sm text-red-500">
+    Please contact us before arrival for approval and pricing.
+  </p>
+)}
 </div>
 
      
